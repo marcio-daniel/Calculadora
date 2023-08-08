@@ -72,7 +72,6 @@ keys.addEventListener('click', e => {
                     default:
                         break;
                 }
-                console.log(result);
                 if(result != null){
                     (-9999999999999<result && result < 9999999999999)  ? displayNumber.textContent = result : displayNumber.textContent = "Estouro" ;
                     removeSelectedClassPreviousOperator();
