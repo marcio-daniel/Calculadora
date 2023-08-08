@@ -40,9 +40,10 @@ keys.addEventListener('click', e => {
 
             if (action === "clear") {
                 displayNumber.textContent = '0';
-                container.dataset.previousKeyType = null;
-                container.dataset.laterNumber = null;
-                container.dataset.previousNumber = null;
+                delete container.dataset.previousKeyType;
+                delete container.dataset.laterNumber ;
+                delete container.dataset.previousNumber;
+                delete container.dataset.previousOperatorType;
                 removeSelectedClassPreviousOperator();
             }
 
@@ -50,10 +51,11 @@ keys.addEventListener('click', e => {
                 if(displayNumber.textContent === "Estouro"){
                     container.dataset.previousNumber = "0";
                 }
-                if(!container.dataset.laterNumber){
+                if(!container.dataset.laterNumber && !container.dataset.previousNumber){
+                    container.dataset.previousNumber = displayNumber.textContent;
                     container.dataset.laterNumber = container.dataset.previousNumber;
                 }
-                let result;
+                let result = null;
                 switch (container.dataset.previousOperatorType) {
                     case "mult":
                         result = Number(container.dataset.previousNumber) * Number(container.dataset.laterNumber)
@@ -70,7 +72,11 @@ keys.addEventListener('click', e => {
                     default:
                         break;
                 }
-                (-9999999999999<result && result < 9999999999999) ? displayNumber.textContent = result : displayNumber.textContent = "Estouro" ;
+                console.log(result);
+                if(result != null){
+                    (-9999999999999<result && result < 9999999999999)  ? displayNumber.textContent = result : displayNumber.textContent = "Estouro" ;
+                    removeSelectedClassPreviousOperator();
+                }
                 container.dataset.previousNumber = displayNumber.textContent;
             }
         }
