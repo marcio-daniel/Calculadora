@@ -7,7 +7,7 @@ keys.addEventListener('click', e => {
         const displayNumber = container.querySelector('.display');
         if (!action) {
             const keyContent = key.textContent;
-            if (displayNumber.textContent === "0" || container.dataset.previousKeyType === 'operator') {
+            if (displayNumber.textContent === "0" || container.dataset.previousKeyType === 'operator' || displayNumber.textContent === "Estouro") {
                 if (container.dataset.previousOperatorType) {
                     removeSelectedClassPreviousOperator();
                     container.dataset.laterNumber = keyContent;
@@ -47,30 +47,31 @@ keys.addEventListener('click', e => {
             }
 
             if (action === "equal") {
+                if(displayNumber.textContent === "Estouro"){
+                    container.dataset.previousNumber = "0";
+                }
+                if(!container.dataset.laterNumber){
+                    container.dataset.laterNumber = container.dataset.previousNumber;
+                }
                 let result;
                 switch (container.dataset.previousOperatorType) {
                     case "mult":
                         result = Number(container.dataset.previousNumber) * Number(container.dataset.laterNumber)
-                        displayNumber.textContent = result;
                         break;
                     case "divi":
                         result = Number(container.dataset.previousNumber) / Number(container.dataset.laterNumber)
-                        displayNumber.textContent = result;
                         break;
                     case "soma":
                         result = Number(container.dataset.previousNumber) + Number(container.dataset.laterNumber)
-                        displayNumber.textContent = result;
                         break;
                     case "sub":
                         result = Number(container.dataset.previousNumber) - Number(container.dataset.laterNumber)
-                        displayNumber.textContent = result;
                         break;
                     default:
                         break;
                 }
-                
+                (-9999999999999<result && result < 9999999999999) ? displayNumber.textContent = result : displayNumber.textContent = "Estouro" ;
                 container.dataset.previousNumber = displayNumber.textContent;
-                container.dataset.laterNumber = null;
             }
         }
     }
