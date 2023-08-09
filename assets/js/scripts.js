@@ -4,7 +4,7 @@ keys.addEventListener('click', e => {
     if (e.target.matches('button')) {
         const key = e.target;
         const action = key.dataset.action;
-        const displayNumber = container.querySelector('.display');
+        const displayNumber = container.querySelector('.display_num');
         if (!action) {
             const keyContent = key.textContent;
             if (displayNumber.textContent === "0" || container.dataset.previousKeyType === 'operator' || displayNumber.textContent === "Estouro") {
@@ -17,14 +17,14 @@ keys.addEventListener('click', e => {
             } else {
                 if (displayNumber.textContent.length < 13) {
                     displayNumber.textContent += keyContent;
-                    if (container.dataset.laterNumber){
+                    if (container.dataset.laterNumber) {
                         container.dataset.laterNumber = displayNumber.textContent;
                     }
                     container.dataset.previousKeyType = 'number';
                 }
             }
         } else {
-            if (action === 'mult' || action === 'soma' || action === 'sub' || action === 'divi') {
+            if (action === 'mult' || action === 'soma' || action === 'sub' || action === 'divi' || action === "raiz" || action === "percent") {
                 if (container.dataset.previousOperatorType !== action && container.dataset.previousOperatorType) {
                     removeSelectedClassPreviousOperator();
                 }
@@ -39,19 +39,19 @@ keys.addEventListener('click', e => {
             }
 
             if (action === "clear") {
+                removeSelectedClassPreviousOperator();
                 displayNumber.textContent = '0';
                 delete container.dataset.previousKeyType;
-                delete container.dataset.laterNumber ;
+                delete container.dataset.laterNumber;
                 delete container.dataset.previousNumber;
                 delete container.dataset.previousOperatorType;
-                removeSelectedClassPreviousOperator();
             }
 
             if (action === "equal") {
-                if(displayNumber.textContent === "Estouro"){
+                if (displayNumber.textContent === "Estouro") {
                     container.dataset.previousNumber = "0";
                 }
-                if(!container.dataset.laterNumber && !container.dataset.previousNumber){
+                if (!container.dataset.laterNumber) {
                     container.dataset.previousNumber = displayNumber.textContent;
                     container.dataset.laterNumber = container.dataset.previousNumber;
                 }
@@ -69,11 +69,17 @@ keys.addEventListener('click', e => {
                     case "sub":
                         result = Number(container.dataset.previousNumber) - Number(container.dataset.laterNumber)
                         break;
+                    case "raiz":
+                        result = Math.sqrt(Number(container.dataset.previousNumber)).toFixed(9);
+                        break;
+                    case "percent":
+                        console.log("Percentual")
+                        break;
                     default:
                         break;
                 }
-                if(result != null){
-                    (-9999999999999<result && result < 9999999999999)  ? displayNumber.textContent = result : displayNumber.textContent = "Estouro" ;
+                if (result != null) {
+                    (-9999999999999 < result && result < 9999999999999) ? displayNumber.textContent = result : displayNumber.textContent = "Estouro";
                     removeSelectedClassPreviousOperator();
                 }
                 container.dataset.previousNumber = displayNumber.textContent;

@@ -1,35 +1,64 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculadora</title>
-    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <script src="https://kit.fontawesome.com/ee342539fd.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
     <div class="container">
-        <div class="display">0</div>
+        <div class="display">
+            <div class="display_eq" id="equ">0</div>
+            <div class="display_num">0</div>
+        </div>
         <div class="keyboard">
-            <button class="key_operator" data-action="soma" id="soma">+</button>
-            <button class="key_operator" data-action="sub" id="sub">-</button>
-            <button class="key_operator" data-action="mult" id="mult">X</button>
-            <button class="key_operator"data-action="divi" id="divi">/</button>
-            <button >9</button>
-            <button >8</button>
-            <button >7</button>
-            <button >6</button>
-            <button >5</button>
-            <button >4</button>
-            <button >3</button>
-            <button >2</button>
-            <button >1</button>
-            <button >0</button>
+            <button class="key_operator" data-action="soma" id="soma">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+            <button class="key_operator" data-action="sub" id="sub">
+                <i class="fa-solid fa-minus"></i>
+            </button>
+            <button class="key_operator" data-action="mult" id="mult">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <button class="key_operator" data-action="divi" id="divi">
+                <i class="fa-solid fa-divide"></i>
+            </button>
+            <button class="key_operator" data-action="abre_paren">
+              (
+            </button>
+            <button class="key_operator" data-action="fecha_paren">
+              )
+            </button>
+            <button class="key_operator" data-action="raiz" id="raiz">
+                <i class="fa-solid fa-square-root-variable"></i>
+            </button>
+            <button class="key_operator" data-action="percent" id="percent">
+                <i class="fa-solid fa-percent"></i>
+            </button>
+            <button>9</button>
+            <button>8</button>
+            <button>7</button>
+            <button>6</button>
+            <button>5</button>
+            <button>4</button>
+            <button>3</button>
+            <button>2</button>
+            <button>1</button>
+            <button>0</button>
             <button data-action="deci">.</button>
             <button data-action="clear">AC</button>
-            <button class="key_equal" data-action="equal">=</button>
+            <button class="key_equal" data-action="equal">
+                <i class="fa-solid fa-equals"></i>
+            </button>
         </div>
     </div>
-
+    <script src="./assets/plugins/jquery/jquery.min.js"></script>
     <script src="./assets/js/scripts.js"></script>
 </body>
+
 </html>

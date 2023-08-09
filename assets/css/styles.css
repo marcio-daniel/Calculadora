@@ -7,7 +7,6 @@
 body {
     background-color: var(--primary-color);
     font-family: 'Open sans', sans-serif;
-    font-size: 65px;
     color: cornsilk;
     margin: 0;
 }
@@ -17,9 +16,9 @@ body {
     flex-direction: column;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 60px;
-    width: 500px;
-    height: 450px;
+    margin-top: 15px;
+    width: 600px;
+    height: 550px;
     background-color: var(--secondary-color);
     border-radius: 7px;
 }
@@ -31,12 +30,19 @@ body {
     background-color: rgb(34, 34, 34);
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
-    height: 92px;
+    height: 150px;
     text-align: end;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 1px;
     width: 100%;
+}
+
+.display_eq{
+    font-size: 35px;
+    padding-top: 30px;
+}
+
+.display_num {
+    font-size: 80px;
+    margin-bottom: 25px;
 }
 
 .keyboard {
@@ -51,7 +57,7 @@ button{
     border-width: 1px;
     border-color: beige;
     border-radius: 3px;
-    height: 70px;
+    height: 66px;
     font-weight: bold;
     color: rgb(61, 61, 65);
 }
@@ -60,7 +66,7 @@ button{
     background-color: cadetblue;
     height: 100%;
     grid-column: -2;
-    grid-row: 2 / span 4;
+    grid-row: 3 / span 4;
 }
 .key_operator{
     background-color: rgb(194, 194, 194);
