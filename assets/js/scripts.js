@@ -26,8 +26,6 @@ keys.addEventListener('click', e => {
                 || displayNumber.textContent === "Estouro") {
 
                 if (container.dataset.previousOperatorType) {
-
-                    removeSelectedClassPreviousOperator();
                     container.dataset.laterNumber = keyContent;
                 }
 
@@ -50,34 +48,27 @@ keys.addEventListener('click', e => {
                 || action === 'soma'
                 || action === 'sub'
                 || action === 'divi'
-                || action === "raiz") {
-
-                if (container.dataset.previousOperatorType !== action
-                    && container.dataset.previousOperatorType) {
-
-                    removeSelectedClassPreviousOperator();
-                }
-                key.classList.add('operator_selected');
+                || action === "raiz" 
+                || action === "expo_quadra") {
 
                 container.dataset.previousKeyType = 'operator';
                 container.dataset.previousOperatorType = action;
                 container.dataset.previousNumber = displayNumber.textContent;
                 atualizaDisplayEq();
-
             }
 
             if (action === "percent") {
                 if (container.dataset.previousNumber
                     && container.dataset.previousKeyType === "operator") {
-
-                    container.dataset.laterNumber = ((Number(container.dataset.previousNumber)) / 100) * (Number(container.dataset.previousNumber));
+                    const result = ((Number(container.dataset.previousNumber)) / 100) * (Number(container.dataset.previousNumber));
+                    Number.isInteger(result) ? container.dataset.laterNumber = result : container.dataset.laterNumber = result.toFixed(1)
                     displayNumber.textContent = container.dataset.laterNumber;
                 }
                 if (container.dataset.previousKeyType === 'number'
                     && container.dataset.previousOperatorType
                     && container.dataset.previousNumber) {
-
-                    container.dataset.laterNumber = ((Number(displayNumber.textContent)) / 100) * (Number(container.dataset.previousNumber))
+                    const result = ((Number(displayNumber.textContent)) / 100) * (Number(container.dataset.previousNumber))
+                    Number.isInteger(result) ? container.dataset.laterNumber = result : container.dataset.laterNumber = result.toFixed(1)
                     displayNumber.textContent = container.dataset.laterNumber;
                 }
 
@@ -90,30 +81,9 @@ keys.addEventListener('click', e => {
                 clear();
             }
 
-            if (action === "abre_paren") {
-                if (!container.dataset.eqComp) {
-                    container.dataset.eqComp = true;
-                    displayEq.textContent += '(';
-                    container.dataset.countOpenParent = 1;
-                } else {
-                    if (container.dataset.countOpenParent < 7) {
-                        container.dataset.countOpenParent++;
-                        displayEq.textContent += '(';
-                    }
-                }
-            }
-            if (action === "fecha_paren") {
-                if (container.dataset.eqComp) {
-                    if (!container.dataset.countCloseParent) {
-                        displayEq.textContent += ')';
-                        container.dataset.countCloseParent = 1;
-                    } else {
-                        if (container.dataset.countCloseParent < container.dataset.countOpenParent) {
-                            container.dataset.countCloseParent++;
-                            displayEq.textContent += ')';
-                        }
-                    }
-                }
+            if (action === "clear_displayNumber") {
+                displayNumber.textContent = '0';
+                dis
             }
 
             if (action === "equal") {
@@ -129,30 +99,32 @@ keys.addEventListener('click', e => {
                     switch (container.dataset.previousOperatorType) {
                         case "mult":
                             result = Number(container.dataset.previousNumber) * Number(container.dataset.laterNumber)
-                            Number.isInteger(result) ? result = result : result = result.toFixed(9)
+                            Number.isInteger(result) ? result = result : result = result.toFixed(1)
                             break;
                         case "divi":
                             result = Number(container.dataset.previousNumber) / Number(container.dataset.laterNumber)
-                            Number.isInteger(result) ? result = result : result = result.toFixed(9)
+                            Number.isInteger(result) ? result = result : result = result.toFixed(1)
                             break;
                         case "soma":
                             result = Number(container.dataset.previousNumber) + Number(container.dataset.laterNumber)
-                            Number.isInteger(result) ? result = result : result = result.toFixed(9)
+                            Number.isInteger(result) ? result = result : result = result.toFixed(1)
                             break;
                         case "sub":
                             result = Number(container.dataset.previousNumber) - Number(container.dataset.laterNumber)
-                            Number.isInteger(result) ? result = result : result = result.toFixed(9)
+                            Number.isInteger(result) ? result = result : result = result.toFixed(1)
                             break;
                         case "raiz":
                             result = Math.sqrt(Number(container.dataset.previousNumber));
-                            Number.isInteger(result) ? result = result : result = result.toFixed(9)
+                            Number.isInteger(result) ? result = result : result = result.toFixed(1)
                             break;
+                        case "expo_quadra":
+                            result = Math.pow(Number(container.dataset.previousNumber),2);
+                            Number.isInteger(result) ? result = result : result = result.toFixed(1)
                         default:
                             break;
                     }
                     if (result != null) {
                         displayNumber.textContent = result;
-                        removeSelectedClassPreviousOperator();
                         if (!(-9999999999999 < result && result < 9999999999999)) {
                             displayNumber.textContent = "Estouro";
                             delete container.dataset.previousKeyType;
@@ -172,12 +144,6 @@ keys.addEventListener('click', e => {
     }
 });
 
-function removeSelectedClassPreviousOperator() {
-    if (container.dataset.previousOperatorType) {
-        const lastOperator = keys.querySelector('#' + container.dataset.previousOperatorType);
-        lastOperator.classList.remove('operator_selected');
-    }
-}
 
 function atualizaDisplayEq(fimeq = false) {
     if (displayNumber.textContent === "Estouro") {
@@ -200,20 +166,26 @@ function atualizaDisplayEq(fimeq = false) {
             case "raiz":
                 op = operators.raiz;
                 break;
+            case "expo_quadra":
+                op = `${container.dataset.previousNumber}²`;
+                break;
             default:
                 break;
         }
         if (container.dataset.previousOperatorType === "raiz") {
             fimeq ? displayEq.innerHTML = `${container.dataset.previousNumber} ${op} = ` : displayEq.innerHTML = `${container.dataset.previousNumber} ${op} `;
         } else {
-            fimeq ? displayEq.innerHTML = `${container.dataset.previousNumber} ${op} ${container.dataset.laterNumber} = ` : displayEq.innerHTML = `${container.dataset.previousNumber} ${op} `;
+            if(container.dataset.previousOperatorType === "expo_quadra"){
+                fimeq ? displayEq.innerHTML = `${op} = ` : displayEq.innerHTML = `${op} `;
+            }else{
+                fimeq ? displayEq.innerHTML = `${container.dataset.previousNumber} ${op} ${container.dataset.laterNumber} = ` : displayEq.innerHTML = `${container.dataset.previousNumber} ${op} `;
+            }
         }
     }
 
 }
 
 function clear() {
-    removeSelectedClassPreviousOperator();
     displayNumber.textContent = '0';
     displayEq.innerHTML = '';
     delete container.dataset.previousKeyType;
