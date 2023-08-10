@@ -36,11 +36,13 @@ body {
 }
 
 .display_eq{
+    padding-right: 10px;
     font-size: 35px;
     padding-top: 30px;
 }
 
 .display_num {
+    padding-right: 10px;
     font-size: 80px;
     margin-bottom: 25px;
 }
