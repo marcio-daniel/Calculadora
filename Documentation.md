@@ -1,128 +1,151 @@
 ### Especificação Funcional do Código Fornecido
 
-O código fornecido é uma implementação do jQuery, uma biblioteca JavaScript popular para manipulação de DOM, eventos, comunicação com servidores HTTP via Ajax, animações e interatividade na página web. Trata-se de uma versão minimizada do jQuery que exclui algumas funcionalidades específicas (e.g., efeitos, animações avançadas, etc.). Ele é utilizado para facilitar e melhorar a produtividade no desenvolvimento de aplicativos e sites.
+O código fornecido implementa funções que simulam uma calculadora interativa com capacidade de realizar cálculos matemáticos usando manipulação de DOM, eventos e lógica de programação. Ele utiliza funcionalidades de JavaScript puro para gerenciar e operar a lógica da calculadora, atualizar displays de equações e resultados, além de implementar cálculos complexos como raiz quadrada, fatorial e operações com parênteses.
 
 ---
 
-#### Funcionalidades Principais da Biblioteca
+#### Funcionalidades Principais da Implementação
 
-1. **Manipulação de Elementos do DOM**:
-   - Seleção de elementos através de diversos métodos (`$('seletor')`).
-   - Modificação de atributos e propriedades (`prop`, `attr`, `css`).
-   - Alteração da estrutura do DOM (`append`, `prepend`, `remove`, `empty`, entre outros).
+1. **Manipulação de Interface do Usuário**:
+   - Integração com elementos HTML (`.container`, `#eq`, `.display_num`) para controle do estado da calculadora.
+   - Atualização dinâmica de displays para representar equações e resultados das operações realizadas pelo usuário.
 
-2. **Eventos**:
-   - Adição e remoção de eventos (`on`, `off`, `trigger`, `triggerHandler`, `hover`, entre outros).
-   - Suporte a eventos personalizados.
-   - Implementação de eventos padrão como `blur`, `focus`, `click`, `resize`, `submit`, entre outros.
+2. **Manipulação de Eventos e Interações**:
+   - Uso de eventos de clique nos botões da calculadora para iniciar ações de cálculos.
+   - Verificação de tipos de teclas acionadas e atualização do estado interno baseado no contexto da interação.
+   - Diferenciação entre teclas numéricas, operadores e funções especiais.
 
-3. **Manipulação de propriedades e cache de dados**:
-   - Armazenamento e recuperação de dados personalizados através das funções `data` e `prop`.
-   - Remoção de propriedades e dados personalizados.
+3. **Operações Matemáticas**:
+   - Suporte a múltiplos operadores matemáticos básicos: adição (`+`), subtração (`-`), multiplicação (`*`), divisão (`/`).
+   - Suporte a funções avançadas, incluindo:
+     - Raiz quadrada (`√`).
+     - Potenciação (`^` e `²`).
+     - Fatorial (`n!`).
+     - Percentual.
+   - Implementação de equações com parênteses para cálculos mais elaborados.
 
-4. **Manipulação de Classes CSS**:
-   - Adição de classes CSS a elementos (`addClass`).
-   - Remoção de classes CSS (`removeClass`).
-   - Alternância de estado de inclusão de classes CSS (`toggleClass`).
-   - Verificação de classes (`hasClass`).
+4. **Gestão de Estados**:
+   - Armazenamento de informação sobre o tipo de tecla previamente clicado (`number`, `operator`, `paren`).
+   - Controle de abertura e fechamento de parênteses.
+   - Gestão da ordem de operações matemáticas para evitar erros em equações complexas.
 
-5. **Suporte a CSS**:
-   - Suporte a propriedades específicas de CSS (`cssHooks`, `cssProps`).
-   - Normalização de valores de CSS como largura, altura e margens, com ajustes de compatibilidade com navegadores.
+5. **Validação e Tratamento de Erros**:
+   - Identificação de situações de "Estouro", exibindo mensagens apropriadas se o resultado exceder os limites estipulados.
+   - Mensagem de erro para operações inválidas (e.g., "Equação inválida").
+   - Tratamento para evitar erros de sintaxe em equações com desequilíbrio de parênteses.
 
-6. **Eventos Assíncronos e Deferidos**:
-   - Criação de promessas e controle de fluxos assíncronos usando funções como `Deferred`, `when`.
-   - Manipulação facilitada de eventos assíncronos e encadeamento de ações.
-
-7. **Ajax**:
-   - Comunicação com servidores HTTP usando requisições assíncronas (Ajax).
-   - Suporte para requisições de scripts, JSON, etc. (item removido nesta versão minimizada).
-
-8. **Serialização de formulários**:
-   - Serialização de formulário para envio de dados ao servidor através de requisições HTTP.
-
-9. **Utilitários**:
-   - Métodos como `each`, `trim`, `proxy`, `merge` para manipulações de dados no JavaScript.
-   - Funções para comparar, verificar tipos de dados e realizar controle sobre seleções.
-
-10. **Compatibilidade com navegadores**:
-    - Suporte para diversas características que apresentam inconsistências entre diferentes navegadores (Internet Explorer, Firefox, Chrome).
+6. **Funções Auxiliares**:
+   - **`clear()`**: Reseta os displays e os valores armazenados no dataset, retornando a calculadora ao estado inicial.
+   - **`factorialize()`**: Calcula o fatorial de um número de forma recursiva.
+   - **`isNumber()`**: Verifica se um valor é um número válido.
+   - **`calcula()`**: Realiza as operações matemáticas básicas entre dois números com um operador específico.
+   - **`achaResult()` e `auxAchaResult()`**: Calcula o resultado de equações complexas com parênteses, resolvendo as partes internas em sequência correta.
+   - **`existOp()`**: Identifica o índice do próximo operador matemático na string da equação.
+   - **`achaUltimoParen()`**: Localiza o índice do último parêntese aberto em uma substring.
 
 ---
 
 #### Diagrama de Funções e Fluxo do Código
 
-##### 1. Diagrama de Fluxo de Manipulação de Eventos:
+##### 1. Diagrama de Fluxo das Interações do Usuário
 ```
-                            +------------------+
-                            | jQuery Extension |
-                            +------------------+
-                                   |
-               +----------------------------------------+
-               | jQuery.event Namespace                |
-               +----------------------------------------+
-                            |
-+------------------+    +------------------+    +------------------+
-| add()            |    | remove()        |    | trigger()         |
-| Adiciona evento  |--> | Remove evento   |--> | Dispara evento    |
-+------------------+    +------------------+    +------------------+
-                            |
-                   +--------------------------+
-                   | Dispatch e Delegação     |
-                   +--------------------------+
-                            |
-          +------------------------------------+
-          | call()                            |
-          | Lida com o comportamento do evento|
-          +------------------------------------+
-```
-
----
-
-##### 2. Diagrama de Interação de Manipulação do DOM
-```
-+----------------------+         +---------------+
-| jQuery Select Element|         | Ajax Requests |
-+----------------------+         +---------------+
-           |
-+-------------------------+
-| Remove Element          | --> Oe() --> limpa o objeto e remove do DOM.
-+-------------------------+
-           |
-+--------------------+
-| Alteração de texto | --> altera o .textContent do elemento DOM.
-+--------------------+
-           |
-+--------------------+
-| Append / Prepend   | --> Adiciona objetos HTML antes/depois do elemento.
-+--------------------+
+                            +---------------------+
+                            | Clique no botão     |
+                            +---------------------+
+                                     |
+                           [Verifica ação do botão]
+                           /                         \
+                          /                           \
+    +------------------------+       +------------------------+
+    | Tecla de número        |       | Tecla de operador      |
+    +------------------------+       +------------------------+
+            |                                  |
++---------------------------+    +--------------------------+
+| Atualiza display de número|    | Atualiza equação no      |
+| e armazena valores no     |    | display da equação.      |
+| dataset.                  |    |                         |
++---------------------------+    +--------------------------+
+            |                                  |
++---------------------------+          +-------------------------+
+| Ação associada            |          | Armazena número atual  |
+| ao evento é realizada.    |          | e tipo de operador.    |
++---------------------------+          +-------------------------+
 ```
 
 ---
 
-##### 3. Diagrama de Classes CSS
+##### 2. Diagrama de Fluxo de Resolução de Equações com Parênteses
 ```
-+----------------+
-| CSS Manipulation|
-+----------------+
-       |
-+----------------+    +----------------+
-| addClass()      |-->| removeClass()   |
-| Adiciona classe |   | Remove classe   |
-+----------------+     +----------------+
-       |
-+----------------+     +----------------+
-| toggleClass()  |-->  | hasClass()     |
-| Alterna classe |     | Verifica classe|
-+----------------+     +----------------+
++-----------------------------------+
+| Entrada: Eq. com parênteses       |
++-----------------------------------+
+            |
+  +--------------------+
+  | Verifica parênteses |
+  +--------------------+
+            |
+  +----------------------------+
+  | Substring do parêntese mais |   
+  | interno identificada        |
+  +----------------------------+
+            |
++--------------------------------------+
+| Resolve conteúdo dentro do parêntese |
++--------------------------------------+
+            |
++-------------------------------------+
+| Equação é atualizada com resultado. |
++-------------------------------------+
+            |
++--------------------------+
+| Verifica próximos        |
+| parênteses e outras      |
+| operações.               |
++--------------------------+
 ```
 
 ---
 
-#### Pontos Importantes
-- A biblioteca jQuery abstrai tarefas comuns de manipulação do DOM e eventos usando um estilo encadeado, permitindo linhas de código mais curtas e eficientes.
-- Esta versão parece ser reduzida para propósitos especializados e não contém toda a funcionalidade padrão da jQuery.
-- A biblioteca inclui suporte a Promises (Deferidos) do JavaScript moderno.
-- Há ajustes para compatibilidade com navegadores mais antigos, como Internet Explorer.
+##### 3. Diagrama de Estados de Operação
+```
++----------------------------+
+| Estado inicial da calculadora |
++----------------------------+
+            |
++-----------------------------+
+| Número digitado -> Estado   |
+| "number", atualizado no      |
+| display de número.           |
++-----------------------------+
+            |
+     +------------+
+     | Operador   |
+     +------------+
+            |
++-------------------------------------+
+| Atualiza equação, troca para estado |
+| "operator", armazena valores no     |
+| dataset e executa operação.         |
++-------------------------------------+
+            |
++------------------------------+
+| Parêntese aberto -> Estado   |
+| "paren", prepara cálculo     |
+| de equação complexa.         |
++------------------------------+
+            |
++-----------------------------+
+| Conclusão e resultado final |
++-----------------------------+
+```
 
-Caso tenha mais dúvidas ou precise de diagramas detalhados ou exemplos de uso para alguma funcionalidade em específico, não hesite em perguntar!
+---
+
+#### Considerações Adicionais
+
+- A interface da calculadora é manipulável via eventos de clique em botões HTML, com base na captura de informações de `data-action` atribuídas a cada botão da interface.
+- A implementação prioriza a precisão dos cálculos ao levar em consideração os limites numéricos (\(-9999999999999 < x < 9999999999999\)) e arredondando valores em operações não inteiramente equivalentes, como divisões e raízes.
+- O código suporta até 7 níveis de parênteses abertos simultaneamente, com controle das quantidades de abertura e fechamento realizados pelo usuário.
+- Cada operação é tratada dentro de suas próprias condições, utilizando o dataset da calculadora para armazenar estados intermediários e garantir a continuidade das equações.
+
+Caso sejam necessárias mais especificações ou explicações sobre o funcionamento detalhado de alguma função ou componente, entre em contato.
