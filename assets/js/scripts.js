@@ -6,7 +6,8 @@ const operators = {
     sub: '-',
     soma: '+',
     raiz: '<i class="fa-solid fa-square-root-variable fa-2xs"></i>',
-    x_ele_y: '^'
+    x_ele_y: '^',
+    modulo: '| |'
 }
 const displayEq = container.querySelector('#eq');
 const displayNumber = container.querySelector('.display_num');
