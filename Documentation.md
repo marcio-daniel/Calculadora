@@ -1,107 +1,136 @@
-### Especificação Funcional do Código Recebido
+### Especificação Funcional do Código
 
-O código fornecido é um dos principais arquivos do JQuery, uma biblioteca JavaScript amplamente utilizada para manipulação de elementos DOM e interação com HTML/JavaScript. Ele contém diferentes funcionalidades voltadas para acesso de elementos, manipulação de atributos, eventos, efeitos e muito mais. A seguir está uma especificação funcional de algumas das principais funcionalidades implementadas:
+O código fornecido é uma implementação de lógica para uma aplicação de calculadora utilizando JavaScript. Ele inclui funcionalidades que permitem interações com elementos DOM, manipulação de dados, operações matemáticas básicas e avançadas, gerenciando estados e inputs do usuário, além de lógica estruturada para cálculos encadeados com suporte a parênteses. A seguir está a especificação funcional detalhada do sistema.
 
 ---
 
 ### Funcionalidades do Código
-1. **Manipulação de Elementos DOM**
-    - Permite criar ou manipular a estrutura DOM por meio de métodos como `append`, `prepend`, `after`, `before`, e outros.
-    - Proporciona métodos para clonar elementos HTML, como o `clone`.
-    - Suporte à remoção de elementos com `remove`.
 
-2. **Manipulação de Atributos**
-    - Permite acessar e modificar atributos HTML de elementos com métodos como `attr` e `removeAttr`.
-    - Garante suporte adequado para atributos booleanos, que podem ser adicionados ou removidos corretamente.
+#### 1. **Estrutura de Elementos DOM**
+    - A estrutura da calculadora compreende os seguintes elementos principais no DOM:
+        - `container`: Identifica o contêiner principal da calculadora.
+        - `keyboard`: Representa os botões de entrada (teclado) para números e operadores.
+        - `displayEq`: Exibe a equação composta pelo usuário.
+        - `displayNumber`: Mostra o número atual ou o resultado do cálculo.
 
-3. **Manipulação de Classes**
-    - Inclui métodos para adicionar, remover ou alternar classes CSS, como `addClass`, `removeClass`, e `toggleClass`.
-    - O método `hasClass` verifica se um elemento possui uma classe específica.
+#### 2. **Gerenciamento de Teclado e Eventos**
+    - A partir do elemento `keyboard`, o código utiliza eventos de clique para capturar interações do usuário.
+    - Botões clicados são identificados via `dataset.action`, permitindo determinar se o botão representa um número, operador, ou funcionalidade específica.
+    - Suporte a diferentes tipos de entrada:
+        - **Números**: Adição direta ao display, com validação para evitar quantidade excessiva de caracteres.
+        - **Operadores**: Atualização dos estados internos e composição da equação visual.
+        - **Funções especiais**: Inclui comportamentos como limpar valores, calcular porcentagem, adicionar pontos decimais, abrir ou fechar parênteses.
 
-4. **Manipulação de Estilo CSS**
-    - Oferece métodos para leitura e escrita de propriedades CSS, como `css`.
-    - Adapta-se corretamente a número de padrões de CSS, como valores com unidades "px" e "em".
+#### 3. **Estados Internos**
+    - Utiliza `dataset` para armazenar os estados e valores necessários para os cálculos:
+        - `previousKeyType`: Guarda o tipo da última tecla pressionada.
+        - `previousOperatorType`: Armazena o operador previamente utilizado.
+        - `previousNumber` e `laterNumber`: Manipulam os números envolvidos em operações matemáticas.
+        - Estados específicos para operações com parênteses:
+            - `eqComp`: Indica que uma equação composta está em construção.
+            - `countOpenParen` e `countCloseParen`: Rastreamentos de parênteses abertos e fechados.
 
-5. **Eventos**
-    - Implementação abrangente de eventos como clique, rolagem, carregamento, dentre outros.
-    - Métodos para ativar, desativar e delegar eventos, como `on`, `off`, `trigger`, e similares.
+#### 4. **Operações Matemáticas**
+    - Suporte a operações básicas e avançadas:
+        - Multiplicação, Divisão, Adição e Subtração.
+        - Raiz quadrada: Calculada utilizando `Math.sqrt`.
+        - Exponenciação: Implementada com `Math.pow`.
+        - Expoente ao quadrado: Utiliza `Math.pow` com expoente fixo.
+        - Fatorial: Calculado com uma função recursiva (`factorialize`).
+    - Validação de limites numéricos para evitar resultados fora da faixa permitida (-9999999999999 a 9999999999999).
 
-6. **Manipulação de Dados**
-    - Proporciona uma API para armazenar e acessar dados diretamente dentro dos elementos do DOM por meio de `data` e `removeData`.
+#### 5. **Lógica para Operações Encadeadas**
+    - Permite cálculos com parênteses compondo equações complexas:
+        - Identifica o último parêntese aberto usando a função `achaUltimoParen`.
+        - Calcula expressões dentro de parênteses primeiro, utilizando `auxAchaResult`, seguido por sua substituição na equação principal.
+        - A função `achaResult` resolve toda equação composta ao iterar pelas expressões até que nenhum parêntese ou operador remanescente exista.
 
-7. **Manipulação de Filas**
-    - Possibilidade de criar e gerenciar filas de execução de funções, especialmente útil em animações.
+#### 6. **Funções Utilitárias**
+    - **atualizaDisplayEq**: Atualiza o display da equação com operadores e valores.
+    - **clear**: Limpa todos os estados internos, resets no display e na equação.
+    - **factorialize**: Calcula o fatorial de um número.
+    - **calcula**: Realiza computação com operador identificado e dois valores.
+    - **existOp**: Verifica se há operador na string da equação.
+    - **achaUltimoParen**: Localiza o índice do último parêntese aberto em uma substring.
 
-8. **Manipulação de Promises**
-    - Integração de métodos baseados em promessas usando `Deferred`, `when`, e similares.
-    - Ajuda na execução assíncrona utilizando conceitos de `done`, `fail`, e `always`.
+#### 7. **Comportamentos Adicionais**
+    - Suporte ao cálculo de porcentagens:
+        - Com base no valor prévio ou como porcentagem relativa.
+    - Adição de ponto decimal:
+        - Garantia de um único ponto por número.
+    - Mensagens de erro e validação:
+        - Exibe "Estouro" para indicar limites excedidos.
+        - Invalida equações com parênteses incorretos, exibindo "Equação inválida".
 
-9. **Traversing (Percorrer Elementos DOM)**
-    - Métodos como `find`, `children`, `siblings`, `parent`, facilitam o movimento entre elementos no DOM.
-    - Métodos como `closest` ajudam a encontrar o parente mais próximo baseado em um seletor.
-
-10. **Estrutura Modular**
-    - Utiliza padrões de modularização para dividir os componentes internos e melhorar a legibilidade.
-    - Capacidade de extensão para que bibliotecas ou plugins adicionais complementem funcionalidades infra-estruturais.
-
-11. **Suporte à Navegadores**
-    - Garante compatibilidade com diferentes navegadores e versões.
-    - Realiza verificações para manipulação correta de eventos e atributos por meio de hacks e testes de suporte.
-
-12. **Eventos Customizados**
-    - Implementação feita para criar ou simular novos eventos no DOM.
-    - Suporte à propagação e delegação de eventos.
-
-13. **Serialização de Dados**
-    - Geração e manipulação de `query strings` para formulários HTML com `serialize` e `serializeArray`.
-
-14. **Parser**
-    - Métodos como `parseHTML` e `parseXML` ajudam a processar e criar novos elementos DOM diretamente de strings HTML.
-
-15. **Suporte à Promises**
-    - Criação de promessas implementadas por meio de métodos do `Deferred`. Permite o gerenciamento de callbacks assíncronos.
-
-16. **Utilidades HTML/XML**
-    - Criação e manipulação de documentos HTML/XML.
-    - Suporte extenso para configurações específicas e comportamentos customizados.
-
-17. **Gerenciamento de Eventos Internos**
-    - Estrutura para adicionar ou remover eventos diretamente a partir de sua representação interna.
-    - Capacidade de sincronização com APIs do navegador.
+#### 8. **Gerenciamento de Estados e Exibição**
+    - Transição fluida entre entradas e combinações de operadores, números e funções especiais.
+    - Atualização em tempo real do conteúdo de `displayEq` e `displayNumber`.
 
 ---
 
-### Diagrama Resumido para Compreensão
+### Diagramas de Fluxo
 
-#### 1. Interações com o DOM
+#### 1. Interações do Usuário com a Interface
 ```plaintext
-                              jQuery DOM Manipulation
--------------------------------------------------------------------------------------
-  +------------------------------+      +-----------------------------+
-  |         Event Management     |----->|      Element Selection      |
-  +------------------------------+      +-----------------------------+
-  | Respond to user interactions |       | Perform element traversal  |
-  | with methods like 'on'       |       | and manipulation of DOM    |
-  +------------------------------+       +-----------------------------+
++---------------+
+|   Clique no   |----> Verifica tipo do botão
+| Botão Teclado |      (Número, Operador, Função)
++---------------+              |
+                                v
+  +-----------------------------+
+  | Atualiza estado (dataset): |
+  | - Tipo de tecla pressionada |
+  | - Números e valores         |
+  +-----------------------------+
 ```
 
-#### 2. Encadeamento de Funções (Chainable Interface)
+#### 2. Construção de Equações Complexas
 ```plaintext
-    +----------------Mappings----------------+     +---------Data Storage ------------+
-    |  Class Manipulation                   | <--> | Custom Data ('data' method)      |
-    |  Examples: 'addClass', 'removeClass'  |      | Access data in elements easily   |
-    +---------------------------------------+      +----------------------------------+
++-----------------------------+
+|  Entrada de parênteses ou   |
+| operadores para compor eq.  |<---+
++-----------------------------+    |
+        |                             |
+        v                             |
++-----------------------------+       |
+| Atualização de estados para |       |
+| contagem de parênteses      |       |
++-----------------------------+       |
+        |                             v
+        +------------------------------+
+        | Análise e cálculo recursivo  |
+        | para resolver subexpressões  |
+        +------------------------------+
 ```
 
-#### 3. Manipulations
+#### 3. Realização de Cálculos
 ```plaintext
-  + Adding Nodes ---------------------------+
-  | Methods: append(), prepend()            |
-  +-----------------------------------------+
-  | Removing Nodes: remove(), empty()       |
-  | Accessibility: 'clone()', retrieve data |
-  +-----------------------------------------+
++------------------------------+
+| Ação gatilho de cálculo      |
+| (Igual/Operador)             |
++------------------------------+
+        |
+        v
++------------------------------+
+|  Verifica validação de       |
+|  dados e operação:           |
+|  - Operações Matemáticas     |
+|  - Limites Numéricos         |
++------------------------------+
+        |
+        v
++------------------------------+
+| Atualiza os displays         |
+| com os resultados            |
++------------------------------+
 ```
 
+---
 
-Se precisar de mais detalhes ou outro tipo de análise, posso fornecer!
+### Implementação Baseada nos Estados Internos
+
+Este script faz uso extensivo de estados armazenados em `container.dataset`, garantindo rastreamento preciso das entradas do usuário e do progresso dos cálculos. A lógica presente aborda casos de uso comuns e sofisticados, proporcionando uma experiência de uso intuitiva para o usuário. Todas as funções e metodologias do código seguem uma abordagem modular, maximizando a clareza e flexibilidade.
+
+O sistema é desenvolvido para operar dentro de um navegador moderno, sem dependências externas, e com suporte para manipulação dinâmica de DOM. Ele utiliza os operadores matemáticos e a biblioteca padrão de JavaScript (`Math`) para executar cálculos avançados e complexos.
+
+Essa documentação apresenta a especificação definitiva para o código recebido.
