@@ -1,151 +1,107 @@
-### Especificação Funcional do Código Fornecido
+### Especificação Funcional do Código Recebido
 
-O código fornecido implementa funções que simulam uma calculadora interativa com capacidade de realizar cálculos matemáticos usando manipulação de DOM, eventos e lógica de programação. Ele utiliza funcionalidades de JavaScript puro para gerenciar e operar a lógica da calculadora, atualizar displays de equações e resultados, além de implementar cálculos complexos como raiz quadrada, fatorial e operações com parênteses.
-
----
-
-#### Funcionalidades Principais da Implementação
-
-1. **Manipulação de Interface do Usuário**:
-   - Integração com elementos HTML (`.container`, `#eq`, `.display_num`) para controle do estado da calculadora.
-   - Atualização dinâmica de displays para representar equações e resultados das operações realizadas pelo usuário.
-
-2. **Manipulação de Eventos e Interações**:
-   - Uso de eventos de clique nos botões da calculadora para iniciar ações de cálculos.
-   - Verificação de tipos de teclas acionadas e atualização do estado interno baseado no contexto da interação.
-   - Diferenciação entre teclas numéricas, operadores e funções especiais.
-
-3. **Operações Matemáticas**:
-   - Suporte a múltiplos operadores matemáticos básicos: adição (`+`), subtração (`-`), multiplicação (`*`), divisão (`/`).
-   - Suporte a funções avançadas, incluindo:
-     - Raiz quadrada (`√`).
-     - Potenciação (`^` e `²`).
-     - Fatorial (`n!`).
-     - Percentual.
-   - Implementação de equações com parênteses para cálculos mais elaborados.
-
-4. **Gestão de Estados**:
-   - Armazenamento de informação sobre o tipo de tecla previamente clicado (`number`, `operator`, `paren`).
-   - Controle de abertura e fechamento de parênteses.
-   - Gestão da ordem de operações matemáticas para evitar erros em equações complexas.
-
-5. **Validação e Tratamento de Erros**:
-   - Identificação de situações de "Estouro", exibindo mensagens apropriadas se o resultado exceder os limites estipulados.
-   - Mensagem de erro para operações inválidas (e.g., "Equação inválida").
-   - Tratamento para evitar erros de sintaxe em equações com desequilíbrio de parênteses.
-
-6. **Funções Auxiliares**:
-   - **`clear()`**: Reseta os displays e os valores armazenados no dataset, retornando a calculadora ao estado inicial.
-   - **`factorialize()`**: Calcula o fatorial de um número de forma recursiva.
-   - **`isNumber()`**: Verifica se um valor é um número válido.
-   - **`calcula()`**: Realiza as operações matemáticas básicas entre dois números com um operador específico.
-   - **`achaResult()` e `auxAchaResult()`**: Calcula o resultado de equações complexas com parênteses, resolvendo as partes internas em sequência correta.
-   - **`existOp()`**: Identifica o índice do próximo operador matemático na string da equação.
-   - **`achaUltimoParen()`**: Localiza o índice do último parêntese aberto em uma substring.
+O código fornecido é um dos principais arquivos do JQuery, uma biblioteca JavaScript amplamente utilizada para manipulação de elementos DOM e interação com HTML/JavaScript. Ele contém diferentes funcionalidades voltadas para acesso de elementos, manipulação de atributos, eventos, efeitos e muito mais. A seguir está uma especificação funcional de algumas das principais funcionalidades implementadas:
 
 ---
 
-#### Diagrama de Funções e Fluxo do Código
+### Funcionalidades do Código
+1. **Manipulação de Elementos DOM**
+    - Permite criar ou manipular a estrutura DOM por meio de métodos como `append`, `prepend`, `after`, `before`, e outros.
+    - Proporciona métodos para clonar elementos HTML, como o `clone`.
+    - Suporte à remoção de elementos com `remove`.
 
-##### 1. Diagrama de Fluxo das Interações do Usuário
-```
-                            +---------------------+
-                            | Clique no botão     |
-                            +---------------------+
-                                     |
-                           [Verifica ação do botão]
-                           /                         \
-                          /                           \
-    +------------------------+       +------------------------+
-    | Tecla de número        |       | Tecla de operador      |
-    +------------------------+       +------------------------+
-            |                                  |
-+---------------------------+    +--------------------------+
-| Atualiza display de número|    | Atualiza equação no      |
-| e armazena valores no     |    | display da equação.      |
-| dataset.                  |    |                         |
-+---------------------------+    +--------------------------+
-            |                                  |
-+---------------------------+          +-------------------------+
-| Ação associada            |          | Armazena número atual  |
-| ao evento é realizada.    |          | e tipo de operador.    |
-+---------------------------+          +-------------------------+
-```
+2. **Manipulação de Atributos**
+    - Permite acessar e modificar atributos HTML de elementos com métodos como `attr` e `removeAttr`.
+    - Garante suporte adequado para atributos booleanos, que podem ser adicionados ou removidos corretamente.
 
----
+3. **Manipulação de Classes**
+    - Inclui métodos para adicionar, remover ou alternar classes CSS, como `addClass`, `removeClass`, e `toggleClass`.
+    - O método `hasClass` verifica se um elemento possui uma classe específica.
 
-##### 2. Diagrama de Fluxo de Resolução de Equações com Parênteses
-```
-+-----------------------------------+
-| Entrada: Eq. com parênteses       |
-+-----------------------------------+
-            |
-  +--------------------+
-  | Verifica parênteses |
-  +--------------------+
-            |
-  +----------------------------+
-  | Substring do parêntese mais |   
-  | interno identificada        |
-  +----------------------------+
-            |
-+--------------------------------------+
-| Resolve conteúdo dentro do parêntese |
-+--------------------------------------+
-            |
-+-------------------------------------+
-| Equação é atualizada com resultado. |
-+-------------------------------------+
-            |
-+--------------------------+
-| Verifica próximos        |
-| parênteses e outras      |
-| operações.               |
-+--------------------------+
-```
+4. **Manipulação de Estilo CSS**
+    - Oferece métodos para leitura e escrita de propriedades CSS, como `css`.
+    - Adapta-se corretamente a número de padrões de CSS, como valores com unidades "px" e "em".
 
----
+5. **Eventos**
+    - Implementação abrangente de eventos como clique, rolagem, carregamento, dentre outros.
+    - Métodos para ativar, desativar e delegar eventos, como `on`, `off`, `trigger`, e similares.
 
-##### 3. Diagrama de Estados de Operação
-```
-+----------------------------+
-| Estado inicial da calculadora |
-+----------------------------+
-            |
-+-----------------------------+
-| Número digitado -> Estado   |
-| "number", atualizado no      |
-| display de número.           |
-+-----------------------------+
-            |
-     +------------+
-     | Operador   |
-     +------------+
-            |
-+-------------------------------------+
-| Atualiza equação, troca para estado |
-| "operator", armazena valores no     |
-| dataset e executa operação.         |
-+-------------------------------------+
-            |
-+------------------------------+
-| Parêntese aberto -> Estado   |
-| "paren", prepara cálculo     |
-| de equação complexa.         |
-+------------------------------+
-            |
-+-----------------------------+
-| Conclusão e resultado final |
-+-----------------------------+
-```
+6. **Manipulação de Dados**
+    - Proporciona uma API para armazenar e acessar dados diretamente dentro dos elementos do DOM por meio de `data` e `removeData`.
+
+7. **Manipulação de Filas**
+    - Possibilidade de criar e gerenciar filas de execução de funções, especialmente útil em animações.
+
+8. **Manipulação de Promises**
+    - Integração de métodos baseados em promessas usando `Deferred`, `when`, e similares.
+    - Ajuda na execução assíncrona utilizando conceitos de `done`, `fail`, e `always`.
+
+9. **Traversing (Percorrer Elementos DOM)**
+    - Métodos como `find`, `children`, `siblings`, `parent`, facilitam o movimento entre elementos no DOM.
+    - Métodos como `closest` ajudam a encontrar o parente mais próximo baseado em um seletor.
+
+10. **Estrutura Modular**
+    - Utiliza padrões de modularização para dividir os componentes internos e melhorar a legibilidade.
+    - Capacidade de extensão para que bibliotecas ou plugins adicionais complementem funcionalidades infra-estruturais.
+
+11. **Suporte à Navegadores**
+    - Garante compatibilidade com diferentes navegadores e versões.
+    - Realiza verificações para manipulação correta de eventos e atributos por meio de hacks e testes de suporte.
+
+12. **Eventos Customizados**
+    - Implementação feita para criar ou simular novos eventos no DOM.
+    - Suporte à propagação e delegação de eventos.
+
+13. **Serialização de Dados**
+    - Geração e manipulação de `query strings` para formulários HTML com `serialize` e `serializeArray`.
+
+14. **Parser**
+    - Métodos como `parseHTML` e `parseXML` ajudam a processar e criar novos elementos DOM diretamente de strings HTML.
+
+15. **Suporte à Promises**
+    - Criação de promessas implementadas por meio de métodos do `Deferred`. Permite o gerenciamento de callbacks assíncronos.
+
+16. **Utilidades HTML/XML**
+    - Criação e manipulação de documentos HTML/XML.
+    - Suporte extenso para configurações específicas e comportamentos customizados.
+
+17. **Gerenciamento de Eventos Internos**
+    - Estrutura para adicionar ou remover eventos diretamente a partir de sua representação interna.
+    - Capacidade de sincronização com APIs do navegador.
 
 ---
 
-#### Considerações Adicionais
+### Diagrama Resumido para Compreensão
 
-- A interface da calculadora é manipulável via eventos de clique em botões HTML, com base na captura de informações de `data-action` atribuídas a cada botão da interface.
-- A implementação prioriza a precisão dos cálculos ao levar em consideração os limites numéricos (\(-9999999999999 < x < 9999999999999\)) e arredondando valores em operações não inteiramente equivalentes, como divisões e raízes.
-- O código suporta até 7 níveis de parênteses abertos simultaneamente, com controle das quantidades de abertura e fechamento realizados pelo usuário.
-- Cada operação é tratada dentro de suas próprias condições, utilizando o dataset da calculadora para armazenar estados intermediários e garantir a continuidade das equações.
+#### 1. Interações com o DOM
+```plaintext
+                              jQuery DOM Manipulation
+-------------------------------------------------------------------------------------
+  +------------------------------+      +-----------------------------+
+  |         Event Management     |----->|      Element Selection      |
+  +------------------------------+      +-----------------------------+
+  | Respond to user interactions |       | Perform element traversal  |
+  | with methods like 'on'       |       | and manipulation of DOM    |
+  +------------------------------+       +-----------------------------+
+```
 
-Caso sejam necessárias mais especificações ou explicações sobre o funcionamento detalhado de alguma função ou componente, entre em contato.
+#### 2. Encadeamento de Funções (Chainable Interface)
+```plaintext
+    +----------------Mappings----------------+     +---------Data Storage ------------+
+    |  Class Manipulation                   | <--> | Custom Data ('data' method)      |
+    |  Examples: 'addClass', 'removeClass'  |      | Access data in elements easily   |
+    +---------------------------------------+      +----------------------------------+
+```
+
+#### 3. Manipulations
+```plaintext
+  + Adding Nodes ---------------------------+
+  | Methods: append(), prepend()            |
+  +-----------------------------------------+
+  | Removing Nodes: remove(), empty()       |
+  | Accessibility: 'clone()', retrieve data |
+  +-----------------------------------------+
+```
+
+
+Se precisar de mais detalhes ou outro tipo de análise, posso fornecer!
